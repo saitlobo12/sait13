@@ -1,0 +1,36 @@
+class TarjetaCredito:
+     def __init__(self, numero: str):
+         if not self.validar_tarjeta(numero):
+             raise ValueError("Número de tarjeta inválido.")
+         self.__numero = numero
+     
+     @staticmethod
+     def validar_tarjeta(numero: str) -> bool:
+         """Valida un número de tarjeta de crédito usando el algoritmo de Luhn."""
+         if not numero.isdigit():
+             return False
+         if len(numero) not in [13, 15, 16]:  # Longitudes típicas de tarjetas
+             return False
+         
+         suma = 0
+         invertir_digitos = list(map(int, numero[::-1]))
+         for i, digito in enumerate(invertir_digitos):
+             if i % 2 == 1:
+                 digito *= 2
+                 if digito > 9:
+                     digito -= 9
+             suma += digito
+         
+         return suma % 10 == 0
+     
+     def obtener_numero(self) -> str:
+         """Retorna el número de tarjeta de crédito."""
+         return self.__numero
+ 
+ # Ejemplo de uso
+ numero_tarjeta = "4532015112830366"  # Número válido de prueba
+ if TarjetaCredito.validar_tarjeta(numero_tarjeta):
+     tarjeta = TarjetaCredito(numero_tarjeta)
+     print(f"Tarjeta válida: {tarjeta.obtener_numero()}")
+ else:
+     print("Número de tarjeta inválido.")
