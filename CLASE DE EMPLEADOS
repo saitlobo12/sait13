@@ -1,0 +1,26 @@
+class Empleado:
+    contador_empleados = 0  # Atributo de clase para contar empleados
+    
+    def __init__(self, nombre: str, salario: float):
+        self.__nombre = nombre
+        self.__salario = salario
+        Empleado.contador_empleados += 1  # Incrementar el contador al crear un empleado
+    
+    @classmethod
+    def cantidad_empleados(cls) -> int:
+        """Devuelve el número total de empleados creados."""
+        return cls.contador_empleados
+    
+    def obtener_nombre(self) -> str:
+        """Retorna el nombre del empleado."""
+        return self.__nombre
+    
+    def obtener_salario(self) -> float:
+        """Retorna el salario del empleado."""
+        return self.__salario
+
+# Ejemplo de uso
+empleado1 = Empleado("Ana Pérez", 3000)
+empleado2 = Empleado("Juan López", 3500)
+
+print(f"Total de empleados: {Empleado.cantidad_empleados()}")
