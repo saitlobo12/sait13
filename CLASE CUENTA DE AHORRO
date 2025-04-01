@@ -1,0 +1,51 @@
+class CuentaBancaria:
+    def __init__(self, titular: str, saldo: float):
+        if saldo < 0:
+            raise ValueError("El saldo no puede ser negativo.")
+        self.__titular = titular
+        self.__saldo = saldo
+    
+    def depositar(self, monto: float):
+        """Deposita dinero en la cuenta."""
+        if monto <= 0:
+            raise ValueError("El monto a depositar debe ser mayor que cero.")
+        self.__saldo += monto
+    
+    def retirar(self, monto: float):
+        """Retira dinero de la cuenta si hay suficiente saldo."""
+        if monto <= 0:
+            raise ValueError("El monto a retirar debe ser mayor que cero.")
+        if monto > self.__saldo:
+            raise ValueError("Fondos insuficientes.")
+        self.__saldo -= monto
+    
+    def obtener_saldo(self) -> float:
+        """Retorna el saldo actual de la cuenta."""
+        return self.__saldo
+    
+    def obtener_titular(self) -> str:
+        """Retorna el titular de la cuenta."""
+        return self.__titular
+
+class CuentaAhorro(CuentaBancaria):
+    def __init__(self, titular: str, saldo: float, interes_anual: float):
+        super().__init__(titular, saldo)
+        if interes_anual < 0:
+            raise ValueError("El porcentaje de interés no puede ser negativo.")
+        self.__interes_anual = interes_anual
+    
+    def aplicar_interes(self):
+        """Aplica el interés anual al saldo actual."""
+        nuevo_saldo = self.obtener_saldo() * (1 + self.__interes_anual / 100)
+        self.depositar(nuevo_saldo - self.obtener_saldo())
+    
+    def obtener_interes_anual(self) -> float:
+        """Retorna el porcentaje de interés anual."""
+        return self.__interes_anual
+
+# Ejemplo de uso
+cuenta = CuentaAhorro("Carlos Pérez", 1000, 5)
+print(f"Titular: {cuenta.obtener_titular()}, Saldo: ${cuenta.obtener_saldo()}, Interés: {cuenta.obtener_interes_anual()}%")
+
+cuenta.aplicar_interes()
+print(f"Saldo después de aplicar interés: ${cuenta.obtener_saldo()}")
